@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { Navigation, MapPin, Clock, ArrowRight, Play, Sparkles } from 'lucide-react';
+import { Navigation, Play, Sparkles } from 'lucide-react';
 
 const PRESETS = [
   {
-    name: 'East Coast Corridor (Richmond → Baltimore → Newark)',
+    name: 'East Coast Corridor (Richmond → Newark)',
     current: 'Richmond, VA',
     pickup: 'Baltimore, MD',
     dropoff: 'Newark, NJ',
     cycle: 18.0,
   },
   {
-    name: 'Long-Haul Fuel & Rests (Richmond → Dallas)',
+    name: 'Long-Haul (Richmond → Dallas)',
     current: 'Richmond, VA',
     pickup: 'Richmond, VA',
     dropoff: 'Dallas, TX',
     cycle: 5.0,
   },
   {
-    name: 'Cycle Near Limit (64h Used → Restart)',
+    name: 'Cycle Restart (64h Used)',
     current: 'Richmond, VA',
     pickup: 'Richmond, VA',
     dropoff: 'Chicago, IL',
@@ -50,12 +50,12 @@ export default function TripForm({ onSubmit, isLoading }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!currentLocation.trim() || !pickupLocation.trim() || !dropoffLocation.trim()) {
-      setFormError('Please provide Current Location, Pickup Location, and Dropoff Location.');
+      setFormError('Please enter Current, Pickup, and Dropoff locations.');
       return;
     }
     const cycleNum = parseFloat(cycleUsed);
     if (isNaN(cycleNum) || cycleNum < 0 || cycleNum > 70) {
-      setFormError('Current Cycle Used must be a number between 0 and 70 hours.');
+      setFormError('Cycle hours must be between 0 and 70.');
       return;
     }
     setFormError('');
@@ -69,20 +69,19 @@ export default function TripForm({ onSubmit, isLoading }) {
 
   return (
     <div className="glass-card">
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
         <h2 className="form-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Navigation size={18} color="#3b82f6" /> Trip Parameters
+          <Navigation size={18} color="var(--brand-orange)" /> Trip Parameters
         </h2>
-        <span style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 600 }}>FMCSA 70h / 8-Day Rule</span>
+        <span style={{ fontSize: '11px', color: 'var(--color-muted)', fontWeight: 700, textTransform: 'uppercase' }}>
+          70h / 8-Day Rule
+        </span>
       </div>
-      <p className="form-description">
-        Configure the driver's current status and shipment route. The engine will schedule mandatory breaks, fuel stops, and 10-hour daily rests.
-      </p>
 
-      {/* Preset Scenarios */}
+      {/* Preset Chips */}
       <div style={{ marginBottom: '16px' }}>
-        <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <Sparkles size={12} color="#60a5fa" /> Quick Test Presets:
+        <div style={{ fontSize: '11px', color: 'var(--color-muted)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <Sparkles size={12} color="var(--brand-orange)" /> Presets:
         </div>
         <div className="preset-buttons-container">
           {PRESETS.map((p, idx) => (
@@ -103,11 +102,12 @@ export default function TripForm({ onSubmit, isLoading }) {
         {formError && (
           <div style={{
             padding: '10px 14px',
-            background: 'rgba(239, 68, 68, 0.15)',
-            border: '1px solid rgba(239, 68, 68, 0.4)',
-            borderRadius: '8px',
-            color: '#fca5a5',
+            background: '#fef2f2',
+            border: '1px solid #fecaca',
+            borderRadius: '10px',
+            color: '#dc2626',
             fontSize: '12px',
+            fontWeight: 600,
             marginBottom: '16px'
           }}>
             {formError}
@@ -117,66 +117,60 @@ export default function TripForm({ onSubmit, isLoading }) {
         {/* Current Location */}
         <div className="input-group">
           <label className="input-label" htmlFor="current-location-input">
-            Current Location <span className="req">*</span>
+            Current Location
           </label>
-          <div style={{ position: 'relative' }}>
-            <input
-              id="current-location-input"
-              type="text"
-              className="text-input"
-              value={currentLocation}
-              onChange={(e) => setCurrentLocation(e.target.value)}
-              placeholder="e.g. Richmond, VA or coordinates"
-              disabled={isLoading}
-              required
-            />
-          </div>
+          <input
+            id="current-location-input"
+            type="text"
+            className="text-input"
+            value={currentLocation}
+            onChange={(e) => setCurrentLocation(e.target.value)}
+            placeholder="e.g. Richmond, VA"
+            disabled={isLoading}
+            required
+          />
         </div>
 
         {/* Pickup Location */}
         <div className="input-group">
           <label className="input-label" htmlFor="pickup-location-input">
-            Pickup Location (1 Hour Loading) <span className="req">*</span>
+            Pickup Location (1h Loading)
           </label>
-          <div style={{ position: 'relative' }}>
-            <input
-              id="pickup-location-input"
-              type="text"
-              className="text-input"
-              value={pickupLocation}
-              onChange={(e) => setPickupLocation(e.target.value)}
-              placeholder="e.g. Baltimore, MD"
-              disabled={isLoading}
-              required
-            />
-          </div>
+          <input
+            id="pickup-location-input"
+            type="text"
+            className="text-input"
+            value={pickupLocation}
+            onChange={(e) => setPickupLocation(e.target.value)}
+            placeholder="e.g. Baltimore, MD"
+            disabled={isLoading}
+            required
+          />
         </div>
 
         {/* Dropoff Location */}
         <div className="input-group">
           <label className="input-label" htmlFor="dropoff-location-input">
-            Dropoff Location (1 Hour Unloading) <span className="req">*</span>
+            Dropoff Location (1h Unloading)
           </label>
-          <div style={{ position: 'relative' }}>
-            <input
-              id="dropoff-location-input"
-              type="text"
-              className="text-input"
-              value={dropoffLocation}
-              onChange={(e) => setDropoffLocation(e.target.value)}
-              placeholder="e.g. Newark, NJ"
-              disabled={isLoading}
-              required
-            />
-          </div>
+          <input
+            id="dropoff-location-input"
+            type="text"
+            className="text-input"
+            value={dropoffLocation}
+            onChange={(e) => setDropoffLocation(e.target.value)}
+            placeholder="e.g. Newark, NJ"
+            disabled={isLoading}
+            required
+          />
         </div>
 
-        {/* Current Cycle Used */}
+        {/* Current Cycle Used Slider */}
         <div className="input-group">
           <div className="slider-container">
             <div className="slider-header">
-              <label className="input-label" htmlFor="cycle-input" style={{ marginBottom: 0 }}>
-                Current Cycle Used (Hours)
+              <label className="input-label" htmlFor="cycle-slider" style={{ marginBottom: 0 }}>
+                Current Cycle Used
               </label>
               <span className="slider-value-display">{Number(cycleUsed).toFixed(1)} / 70.0 hrs</span>
             </div>
@@ -191,10 +185,10 @@ export default function TripForm({ onSubmit, isLoading }) {
               onChange={(e) => setCycleUsed(parseFloat(e.target.value))}
               disabled={isLoading}
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>
-              <span>0h (Fresh 70h)</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--color-muted)', marginTop: '4px', fontWeight: 600 }}>
+              <span>0h Available</span>
               <span>35h</span>
-              <span>70h (Exhausted)</span>
+              <span>70h Limit</span>
             </div>
           </div>
         </div>
@@ -208,13 +202,13 @@ export default function TripForm({ onSubmit, isLoading }) {
         >
           {isLoading ? (
             <>
-              <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px' }} />
-              <span>Analyzing HOS & Planning Trip...</span>
+              <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderTopColor: '#ffffff' }} />
+              <span>Calculating HOS Schedule...</span>
             </>
           ) : (
             <>
               <Play size={16} fill="currentColor" />
-              <span>Generate Schedule & ELD Logs</span>
+              <span>Calculate Trip & Draw ELD Logs</span>
             </>
           )}
         </button>

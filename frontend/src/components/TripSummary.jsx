@@ -8,18 +8,18 @@ export default function TripSummary({ summary, locations, dailyLogsCount }) {
 
   return (
     <div style={{ marginBottom: '24px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
         <div>
-          <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#f9fafb' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-ink)', letterSpacing: '-0.3px' }}>
             Trip & Hours of Service Summary
           </h2>
-          <p style={{ fontSize: '12px', color: '#9ca3af' }}>
-            Route from {locations?.start?.name} to {locations?.dropoff?.name} via {locations?.pickup?.name}
+          <p style={{ fontSize: '12px', color: 'var(--color-secondary)' }}>
+            {locations?.start?.name} → {locations?.pickup?.name} → {locations?.dropoff?.name}
           </p>
         </div>
         <div className="compliance-tag">
-          <ShieldCheck size={14} color="#10b981" />
-          <span>FMCSA Part 395 Compliant</span>
+          <span className="pulse-dot" />
+          <span>FMCSA § 395 Verified</span>
         </div>
       </div>
 
@@ -27,43 +27,43 @@ export default function TripSummary({ summary, locations, dailyLogsCount }) {
         {/* Total Distance */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Route size={14} color="#60a5fa" /> Total Distance
+            <Route size={14} color="var(--brand-orange)" /> Total Distance
           </span>
-          <span className="metric-val highlight-blue">
-            {summary.total_distance_miles?.toLocaleString()} <span style={{ fontSize: '14px', fontWeight: 500 }}>mi</span>
+          <span className="metric-val highlight-orange">
+            {summary.total_distance_miles?.toLocaleString()} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-muted)' }}>mi</span>
           </span>
-          <span className="metric-sub">Commercial highway miles</span>
+          <span className="metric-sub">Highway corridor route</span>
         </div>
 
         {/* Driving Hours */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Clock size={14} color="#34d399" /> Total Driving
+            <Clock size={14} color="var(--status-emerald)" /> Driving Time
           </span>
           <span className="metric-val highlight-emerald">
-            {summary.total_driving_hours?.toFixed(1)} <span style={{ fontSize: '14px', fontWeight: 500 }}>hrs</span>
+            {summary.total_driving_hours?.toFixed(1)} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-muted)' }}>hrs</span>
           </span>
-          <span className="metric-sub">Max 11h per work shift</span>
+          <span className="metric-sub">Max 11h per shift</span>
         </div>
 
         {/* On-Duty Hours */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Clock size={14} color="#fbbf24" /> Total On-Duty
+            <Clock size={14} color="var(--brand-orange)" /> On-Duty Time
           </span>
-          <span className="metric-val highlight-amber">
-            {summary.total_on_duty_hours?.toFixed(1)} <span style={{ fontSize: '14px', fontWeight: 500 }}>hrs</span>
+          <span className="metric-val">
+            {summary.total_on_duty_hours?.toFixed(1)} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-muted)' }}>hrs</span>
           </span>
-          <span className="metric-sub">Driving + Work duties</span>
+          <span className="metric-sub">Driving + Loading/Unloading</span>
         </div>
 
-        {/* Cycle Recap */}
+        {/* Cycle Utilization */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <ShieldCheck size={14} color="#c084fc" /> 70h Cycle Status
+            <ShieldCheck size={14} color="var(--status-purple)" /> 70h Cycle Status
           </span>
           <span className="metric-val highlight-purple">
-            {summary.final_cycle_used?.toFixed(1)} <span style={{ fontSize: '14px', fontWeight: 500 }}>/ 70h</span>
+            {summary.final_cycle_used?.toFixed(1)} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-muted)' }}>/ 70h</span>
           </span>
           <span className="metric-sub">{remainingCycle.toFixed(1)}h remaining in cycle</span>
         </div>
@@ -71,45 +71,45 @@ export default function TripSummary({ summary, locations, dailyLogsCount }) {
         {/* 10-Hour Daily Rests */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Moon size={14} color="#a78bfa" /> Daily 10h Rests
+            <Moon size={14} color="var(--status-purple)" /> 10h Rests
           </span>
           <span className="metric-val">
             {summary.rest_stops_count || 0}
           </span>
-          <span className="metric-sub">Sleeper berth rest periods</span>
+          <span className="metric-sub">Sleeper berth shifts</span>
         </div>
 
         {/* Fuel Stops */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Fuel size={14} color="#f59e0b" /> Fuel Stops
+            <Fuel size={14} color="var(--brand-orange)" /> Fuel Stops
           </span>
           <span className="metric-val">
             {summary.fuel_stops_count || 0}
           </span>
-          <span className="metric-sub">&le; 1,000 mi requirement</span>
+          <span className="metric-sub">&le; 1,000 mi interval</span>
         </div>
 
         {/* 30-Min Breaks */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Coffee size={14} color="#06b6d4" /> 30-Min Breaks
+            <Coffee size={14} color="var(--status-slate)" /> 30m Breaks
           </span>
           <span className="metric-val">
             {summary.break_stops_count || 0}
           </span>
-          <span className="metric-sub">After 8 cumulative drive hours</span>
+          <span className="metric-sub">Required at 8h driving</span>
         </div>
 
-        {/* Daily Logs Generated */}
+        {/* Daily Log Sheets */}
         <div className="metric-card">
           <span className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <CheckCircle2 size={14} color="#10b981" /> Daily ELD Logs
+            <CheckCircle2 size={14} color="var(--status-emerald)" /> Daily ELD Logs
           </span>
           <span className="metric-val highlight-emerald">
-            {dailyLogsCount || 1} <span style={{ fontSize: '14px', fontWeight: 500 }}>sheets</span>
+            {dailyLogsCount || 1} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-muted)' }}>sheets</span>
           </span>
-          <span className="metric-sub">24-hour midnight splits</span>
+          <span className="metric-sub">24-hour midnight split</span>
         </div>
       </div>
     </div>
