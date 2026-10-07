@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+build/
+.npm
+*.local
+
+# Logs
+*.log
+hos_guide_extracted.txt
+
+# OS
+.DS_Store
+Thumbs.db
