@@ -65,9 +65,9 @@ export default function RouteMap({ route, events, locations }) {
         attributionControl: true,
       }).setView([39.8283, -98.5795], 4);
 
-      // OpenStreetMap official tiles (free, no watermark, no API key)
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      // High-performance ESRI World Street Map (100% free, no referer blocks on Render/Vercel, no API key)
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '&copy; Esri &mdash; Street Map Contributors',
         maxZoom: 19,
       }).addTo(map);
 
@@ -174,7 +174,7 @@ export default function RouteMap({ route, events, locations }) {
         <h3 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-ink)' }}>
           Interactive Route & Waypoints Map
         </h3>
-        <span style={{ fontSize: '11px', color: 'var(--color-muted)', fontWeight: 600 }}>OpenStreetMap Route</span>
+        <span style={{ fontSize: '11px', color: 'var(--color-muted)', fontWeight: 600 }}>Highways &amp; Street Map</span>
       </div>
 
       <div ref={mapContainerRef} className="map-wrapper" />
