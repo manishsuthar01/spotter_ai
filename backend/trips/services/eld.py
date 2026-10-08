@@ -196,6 +196,8 @@ def generate_daily_eld_logs(
         # Check if 34-hour restart occurred today or during trip
         has_restart_today = any(s["event_type"] == "CYCLE_RESTART" for s in day_segments)
         if has_restart_today:
+            prior_days_on_duty = [on_duty_today]
+            initial_cycle_used = 0.0
             last_7_sum = on_duty_today
             last_8_sum = on_duty_today
             avail_tomorrow = round(max(0.0, CYCLE_LIMIT_HOURS - on_duty_today), 2)

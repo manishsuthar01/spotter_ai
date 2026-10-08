@@ -160,6 +160,13 @@ export default function App() {
             >
               ⏱️ Driver Timeline ({tripData.events?.length} Stops)
             </button>
+            <button
+              type="button"
+              className={`eld-tab-btn ${activeTab === 'directions' ? 'active' : ''}`}
+              onClick={() => setActiveTab('directions')}
+            >
+              🧭 Turn-by-Turn Directions
+            </button>
           </div>
 
           {/* ELD Daily Logs View */}
@@ -175,7 +182,7 @@ export default function App() {
           )}
 
           {/* Turn-by-Turn Maneuvers */}
-          {activeTab === 'overview' && (
+          {(activeTab === 'overview' || activeTab === 'directions') && (
             <div style={{ marginTop: '20px' }}>
               <RouteDirections route={tripData.route} locations={tripData.locations} />
             </div>
