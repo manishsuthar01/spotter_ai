@@ -247,9 +247,15 @@ class TripPlanner:
         total_off_duty_hours = sum(e.duration_hours for e in self.events if e.duty_status in (DutyStatus.OFF_DUTY, DutyStatus.SLEEPER_BERTH))
         total_elapsed_hours = (state.current_time - self.start_datetime).total_seconds() / 3600.0
 
-        num_fuel_stops = len([e for e in self.events if e.event_type == "FUEL_STOP"])
+        fuel_events = [e for e in self.events if e.event_type == "FUEL_STOP"]
+        num_fuel_stops = len(fuel_events)
         num_rest_stops = len([e for e in self.events if e.event_type in ("DAILY_REST", "CYCLE_RESTART")])
         num_breaks = len([e for e in self.events if e.event_type == "REST_BREAK"])
+
+        # Commercial Freight Diesel Economics (Class 8 standard: 6.5 MPG, $3.85/gal)
+        estimated_fuel_gallons = round(total_distance / 6.5, 1) if total_distance > 0 else 0.0
+        estimated_fuel_cost = round(estimated_fuel_gallons * 3.85, 2)
+        miles_to_next_fuel = round(max(0.0, 1000.0 - state.miles_since_fuel), 1)
 
         return {
             "locations": {
@@ -270,6 +276,21 @@ class TripPlanner:
                 "fuel_stops_count": num_fuel_stops,
                 "rest_stops_count": num_rest_stops,
                 "break_stops_count": num_breaks,
+                "estimated_fuel_gallons": estimated_fuel_gallons,
+                "estimated_fuel_cost": estimated_fuel_cost,
+                "fuel_interval_miles": 1000.0,
+                "miles_until_next_fuel": miles_to_next_fuel,
+                "fuel_stops_details": [
+                    {
+                        "event_id": f.event_id,
+                        "location_name": f.location_name,
+                        "odometer_mile": f.start_odometer,
+                        "duration_hours": f.duration_hours,
+                        "start_time": f.start_time.isoformat(),
+                        "end_time": f.end_time.isoformat(),
+                    }
+                    for f in fuel_events
+                ],
             },
             "route": {
                 "combined_path": combined_path,

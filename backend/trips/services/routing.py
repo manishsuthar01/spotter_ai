@@ -46,6 +46,26 @@ KNOWN_US_LOCATIONS: Dict[str, Dict[str, Any]] = {
     "kansas city, mo": {"lat": 39.0997, "lng": -94.5786, "name": "Kansas City, MO"},
     "charlotte, nc": {"lat": 35.2271, "lng": -80.8431, "name": "Charlotte, NC"},
     "cleveland, oh": {"lat": 41.4993, "lng": -81.6944, "name": "Cleveland, OH"},
+    "boston, ma": {"lat": 42.3601, "lng": -71.0589, "name": "Boston, MA"},
+    "boston": {"lat": 42.3601, "lng": -71.0589, "name": "Boston, MA"},
+    "san francisco, ca": {"lat": 37.7749, "lng": -122.4194, "name": "San Francisco, CA"},
+    "san francisco": {"lat": 37.7749, "lng": -122.4194, "name": "San Francisco, CA"},
+    "salt lake city, ut": {"lat": 40.7608, "lng": -111.8910, "name": "Salt Lake City, UT"},
+    "salt lake city": {"lat": 40.7608, "lng": -111.8910, "name": "Salt Lake City, UT"},
+    "las vegas, nv": {"lat": 36.1699, "lng": -115.1398, "name": "Las Vegas, NV"},
+    "las vegas": {"lat": 36.1699, "lng": -115.1398, "name": "Las Vegas, NV"},
+    "portland, or": {"lat": 45.5152, "lng": -122.6784, "name": "Portland, OR"},
+    "portland": {"lat": 45.5152, "lng": -122.6784, "name": "Portland, OR"},
+    "san diego, ca": {"lat": 32.7157, "lng": -117.1611, "name": "San Diego, CA"},
+    "san diego": {"lat": 32.7157, "lng": -117.1611, "name": "San Diego, CA"},
+    "minneapolis, mn": {"lat": 44.9778, "lng": -93.2650, "name": "Minneapolis, MN"},
+    "minneapolis": {"lat": 44.9778, "lng": -93.2650, "name": "Minneapolis, MN"},
+    "tampa, fl": {"lat": 27.9506, "lng": -82.4572, "name": "Tampa, FL"},
+    "tampa": {"lat": 27.9506, "lng": -82.4572, "name": "Tampa, FL"},
+    "austin, tx": {"lat": 30.2672, "lng": -97.7431, "name": "Austin, TX"},
+    "austin": {"lat": 30.2672, "lng": -97.7431, "name": "Austin, TX"},
+    "pittsburgh, pa": {"lat": 40.4406, "lng": -79.9959, "name": "Pittsburgh, PA"},
+    "pittsburgh": {"lat": 40.4406, "lng": -79.9959, "name": "Pittsburgh, PA"},
 }
 
 _GEOCODE_CACHE: Dict[str, Dict[str, Any]] = {}
@@ -143,7 +163,7 @@ def get_route_segment(origin: Dict[str, Any], destination: Dict[str, Any]) -> Di
     url = f"http://router.project-osrm.org/route/v1/driving/{orig_lng},{orig_lat};{dest_lng},{dest_lat}?overview=full&geometries=geojson&steps=true"
     
     try:
-        resp = requests.get(url, timeout=5)
+        resp = requests.get(url, timeout=10)
         if resp.status_code == 200:
             data = resp.json()
             if data.get("code") == "Ok" and data.get("routes"):

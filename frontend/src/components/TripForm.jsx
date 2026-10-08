@@ -3,32 +3,32 @@ import { Navigation, Play, Sparkles } from 'lucide-react';
 
 const PRESETS = [
   {
-    name: 'East Coast Corridor (Richmond → Newark)',
+    name: 'Corridor (Richmond → Newark · 337 mi)',
     current: 'Richmond, VA',
     pickup: 'Baltimore, MD',
     dropoff: 'Newark, NJ',
     cycle: 18.0,
   },
   {
-    name: 'Long-Haul (Richmond → Dallas)',
+    name: 'Long-Haul (Richmond → Dallas · 1,278 mi · 1 Fuel Stop)',
     current: 'Richmond, VA',
     pickup: 'Richmond, VA',
     dropoff: 'Dallas, TX',
     cycle: 5.0,
   },
   {
-    name: 'Cycle Restart (64h Used)',
+    name: 'Coast-to-Coast (Miami → Seattle · 3,304 mi · 3 Fuel Stops)',
+    current: 'Miami, FL',
+    pickup: 'Atlanta, GA',
+    dropoff: 'Seattle, WA',
+    cycle: 0.0,
+  },
+  {
+    name: 'Cycle Restart (Richmond → Chicago · 64h Used)',
     current: 'Richmond, VA',
     pickup: 'Richmond, VA',
     dropoff: 'Chicago, IL',
     cycle: 64.0,
-  },
-  {
-    name: 'Short Haul (Richmond → Fredericksburg)',
-    current: 'Richmond, VA',
-    pickup: 'Richmond, VA',
-    dropoff: 'Fredericksburg, VA',
-    cycle: 12.0,
   },
 ];
 
