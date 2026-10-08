@@ -3,7 +3,15 @@
  * Interacts with Django REST backend with intelligent local fallback for resilient demonstration.
  */
 
-const BACKEND_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Intelligent base URL:
+// 1. Uses explicit VITE_API_URL if set (e.g. on Vercel pointing to external backend)
+// 2. If running locally on Vite dev server (port 5173), points to local Django (port 8000)
+// 3. Otherwise (e.g. all-in-one production build or same-host deployment), uses relative path ''
+const BACKEND_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port === '5173'
+    ? 'http://127.0.0.1:8000'
+    : '');
 
 export async function checkBackendHealth() {
   try {

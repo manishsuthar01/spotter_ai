@@ -58,6 +58,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+FRONTEND_DIST_DIR = BASE_DIR.parent / 'frontend' / 'dist'
+STATICFILES_DIRS = [FRONTEND_DIST_DIR] if FRONTEND_DIST_DIR.exists() else []
+
 
 ROOT_URLCONF = 'spotter_backend.urls'
 

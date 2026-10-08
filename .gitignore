@@ -8,6 +8,7 @@ env/
 venv/
 .venv/
 *.sqlite3
+staticfiles/
 
 # Node
 node_modules/
